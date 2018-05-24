@@ -27,6 +27,7 @@ flags.DEFINE_boolean("crop", False, "True for training, False for testing [False
 flags.DEFINE_boolean("visualize", False, "True for visualizing, False for nothing [False]")
 flags.DEFINE_integer("generate_test_images", 100, "Number of images to generate during test. [100]")
 flags.DEFINE_boolean("save_option", 0, "Option for generate images")
+flags.DEFINE_boolean("log_device", False, "Visualize device placement [False]")
 FLAGS = flags.FLAGS
 
 def main(_):
@@ -45,7 +46,7 @@ def main(_):
   # gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.333)
   run_config = tf.ConfigProto()
   run_config.gpu_options.allow_growth=True
-  run_config.log_device_placement=True
+  run_config.log_device_placement=FLAGS.log_device
 
   with tf.Session(config=run_config) as sess:
     if FLAGS.dataset == 'mnist':
