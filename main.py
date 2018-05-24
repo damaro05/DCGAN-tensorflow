@@ -26,6 +26,7 @@ flags.DEFINE_boolean("train", False, "True for training, False for testing [Fals
 flags.DEFINE_boolean("crop", False, "True for training, False for testing [False]")
 flags.DEFINE_boolean("visualize", False, "True for visualizing, False for nothing [False]")
 flags.DEFINE_integer("generate_test_images", 100, "Number of images to generate during test. [100]")
+flags.DEFINE_boolean("save_option", 0, "Option for generate images")
 FLAGS = flags.FLAGS
 
 def main(_):
@@ -41,9 +42,10 @@ def main(_):
   if not os.path.exists(FLAGS.sample_dir):
     os.makedirs(FLAGS.sample_dir)
 
-  #gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.333)
+  # gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.333)
   run_config = tf.ConfigProto()
   run_config.gpu_options.allow_growth=True
+  run_config.log_device_placement=True
 
   with tf.Session(config=run_config) as sess:
     if FLAGS.dataset == 'mnist':
@@ -96,7 +98,7 @@ def main(_):
     #                 [dcgan.h4_w, dcgan.h4_b, None])
 
     # Below is codes for visualization
-    OPTION = 1
+    OPTION = FLAGS.save_option
     visualize(sess, dcgan, FLAGS, OPTION)
 
 if __name__ == '__main__':
